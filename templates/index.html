@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Prediksi Pembatalan Hotel
+    </title>
+
+    <!-- GOOGLE FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+    <div class="bg-circle one"></div>
+    <div class="bg-circle two"></div>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="header">
+
+            <div class="badge">
+                MACHINE LEARNING • RANDOM FOREST
+            </div>
+
+            <h1>
+                KLASIFIKASI PEMBATALAN
+                PEMESANAN HOTEL
+            </h1>
+
+            <p>
+                Sistem prediksi status booking hotel
+                menggunakan algoritma Random Forest
+                untuk menentukan kemungkinan
+                booking cancel atau check-in.
+            </p>
+
+        </div>
+
+        <!-- GRID -->
+        <div class="grid">
+
+            <!-- FORM -->
+            <div class="card form-card">
+
+                <div class="card-title">
+                    Form Prediksi Booking
+                </div>
+
+                <div class="card-desc">
+                    Isi data pelanggan hotel untuk
+                    melakukan prediksi status booking.
+                </div>
+
+                <form action="/prediksi" method="POST">
+
+                    <!-- HOTEL -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Jenis Hotel
+                        </label>
+
+                        <span class="info">
+                            Memilih tipe hotel yang dipesan pelanggan.
+                        </span>
+
+                        <select name="hotel">
+
+                            <option value="Resort Hotel">
+                                Resort Hotel (Hotel Resort)
+                            </option>
+
+                            <option value="City Hotel">
+                                City Hotel (Hotel Kota)
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- LEAD TIME -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Lead Time
+                        </label>
+
+                        <span class="info">
+                            Jarak hari antara tanggal booking
+                            dan tanggal check-in hotel.
+                        </span>
+
+                        <input type="number"
+                               name="lead_time"
+                               placeholder="Contoh : 30"
+                               required>
+
+                    </div>
+
+                    <!-- BULAN -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Bulan Kedatangan
+                        </label>
+
+                        <span class="info">
+                            Bulan pelanggan melakukan check-in hotel.
+                        </span>
+
+                        <select name="arrival_date_month">
+
+                            <option>January</option>
+                            <option>February</option>
+                            <option>March</option>
+                            <option>April</option>
+                            <option>May</option>
+                            <option>June</option>
+                            <option>July</option>
+                            <option>August</option>
+                            <option>September</option>
+                            <option>October</option>
+                            <option>November</option>
+                            <option>December</option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- DEWASA & ANAK -->
+
+                    <div class="row">
+
+                        <div class="input-group">
+
+                            <label>
+                                Jumlah Dewasa
+                            </label>
+
+                            <span class="info">
+                                Jumlah tamu dewasa yang menginap.
+                            </span>
+
+                            <input type="number"
+                                   name="adults"
+                                   placeholder="Contoh : 2"
+                                   required>
+
+                        </div>
+
+                        <div class="input-group">
+
+                            <label>
+                                Jumlah Anak
+                            </label>
+
+                            <span class="info">
+                                Jumlah anak yang ikut menginap.
+                            </span>
+
+                            <input type="number"
+                                   name="children"
+                                   placeholder="Contoh : 1"
+                                   required>
+
+                        </div>
+
+                    </div>
+
+                    <!-- BAYI & REQUEST -->
+
+                    <div class="row">
+
+                        <div class="input-group">
+
+                            <label>
+                                Jumlah Bayi
+                            </label>
+
+                            <span class="info">
+                                Jumlah bayi dalam reservasi hotel.
+                            </span>
+
+                            <input type="number"
+                                   name="babies"
+                                   placeholder="Contoh : 0"
+                                   required>
+
+                        </div>
+
+                        <div class="input-group">
+
+                            <label>
+                                Special Request
+                            </label>
+
+                            <span class="info">
+                                Jumlah permintaan khusus pelanggan.
+                            </span>
+
+                            <input type="number"
+                                   name="total_of_special_requests"
+                                   placeholder="Contoh : 1"
+                                   required>
+
+                        </div>
+
+                    </div>
+
+                    <!-- MAKANAN -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Tipe Makanan
+                        </label>
+
+                        <span class="info">
+                            Paket makanan yang dipilih pelanggan.
+                        </span>
+
+                            <select name="meal">
+
+                                <option value="BB">
+                                    BB - Bed & Breakfast
+                                    (Kamar + Sarapan)
+                                </option>
+
+                                <option value="HB">
+                                    HB - Half Board
+                                    (Sarapan + 1x Makan)
+                                </option>
+
+                                <option value="FB">
+                                    FB - Full Board
+                                    (Sarapan + Makan Lengkap)
+                                </option>
+
+                            </select>
+
+                    </div>
+
+                    <!-- COUNTRY -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Country
+                        </label>
+
+                        <span class="info">
+                            Negara asal pelanggan hotel.
+                        </span>
+
+                        <select name="country">
+
+                            <option value="PRT">
+                                Portugal (PRT)
+                            </option>
+
+                            <option value="GBR">
+                                United Kingdom (GBR)
+                            </option>
+
+                            <option value="FRA">
+                                France (FRA)
+                            </option>
+
+                            <option value="ESP">
+                                Spain (ESP)
+                            </option>
+
+                            <option value="DEU">
+                                Germany (DEU)
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- MARKET -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Market Segment
+                        </label>
+
+                        <span class="info">
+                            Jalur pelanggan melakukan booking hotel.
+                        </span>
+
+                        <select name="market_segment">
+
+                            <option>
+                                Online TA
+                            </option>
+
+                            <option>
+                                Offline TA/TO
+                            </option>
+
+                            <option>
+                                Direct
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- DEPOSIT -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Deposit Type
+                        </label>
+
+                        <span class="info">
+                            Jenis pembayaran deposit pelanggan.
+                        </span>
+
+                        <select name="deposit_type">
+
+                            <option>No Deposit</option>
+                            <option>Refundable</option>
+                            <option>Non Refund</option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- CUSTOMER -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Customer Type
+                        </label>
+
+                        <span class="info">
+                            Jenis kategori pelanggan hotel.
+                        </span>
+
+                        <select name="customer_type">
+
+                            <option value="Transient">
+                                Transient
+                                (Pelanggan Umum/Perorangan)
+                            </option>
+
+                            <option value="Contract">
+                                Contract
+                                (Pelanggan Kontrak Perusahaan)
+                            </option>
+
+                            <option value="Group">
+                                Group
+                                (Pelanggan Rombongan)
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- ADR -->
+
+                    <div class="input-group">
+
+                        <label>
+                            ADR (Average Daily Rate)
+                        </label>
+
+                        <span class="info">
+                            Harga rata-rata kamar hotel per malam.
+                        </span>
+
+                        <input type="number"
+                               step="0.01"
+                               name="adr"
+                               placeholder="Contoh : 120"
+                               required>
+
+                    </div>
+
+                    <!-- BUTTON -->
+
+                    <button type="submit">
+
+                        PREDIKSI SEKARANG
+
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- SIDE CONTENT -->
+            <div class="side-content">
+
+                <!-- HASIL -->
+
+                {% if hasil %}
+
+                <div class="card hasil-card {{ status }}">
+
+                    <div class="hasil-title">
+
+                        HASIL PREDIKSI
+
+                    </div>
+
+                    <h2>
+
+                        {{ hasil }}
+
+                    </h2>
+
+                    <p>
+
+                        {{ keterangan }}
+
+                    </p>
+
+                    <div class="accuracy">
+
+                        Accuracy Model :
+
+                        <span>
+
+                            {{ accuracy }}%
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+                <!-- GRAFIK -->
+
+                <div class="card grafik-card">
+
+                    <div class="card-title">
+
+                        Grafik Booking & Cancel
+
+                    </div>
+
+                    <div class="card-desc">
+
+                        Menampilkan bulan yang paling
+                        sering terjadi booking dan cancel.
+
+                    </div>
+
+                    <img src="{{ url_for('static',
+                                         filename='grafik.png') }}">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
